@@ -1,6 +1,7 @@
 const { AuthenticationError, UserInputError } = require('apollo-server')
 
 const Post = require('../../models/Post')
+const User = require('../../models/User')
 const checkAuth =  require('../../util/check-auth')
 
 module.exports = {
@@ -26,6 +27,16 @@ module.exports = {
           throw new Error('Post not found')
         }
       } catch(err) {
+        throw new Error(err)
+      }
+    },
+
+    // Fetch all posts from user
+    async getUserPosts(_, { username }){
+      try{
+        const posts = await Post.find({ "username": username })
+        return posts
+      } catch(err){
         throw new Error(err)
       }
     }
